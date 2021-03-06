@@ -39,7 +39,15 @@ class App extends React.Component {
     });
   };
 
-  removeContact = () => {};
+  removeContact = (id) => {
+    const newContactlist = this.state.contacts.filter(
+      (contact) => contact.id !== id
+    );
+
+    this.setState({
+      contacts: newContactlist
+    });
+  };
 
   render() {
     return (
@@ -65,7 +73,9 @@ class App extends React.Component {
                 <td>{contact.name}</td>
                 <td>{contact.popularity}</td>
                 <td>
-                  <button onClick={this.removeContact}>Remove contact</button>
+                  <button onClick={() => this.removeContact(contact.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
