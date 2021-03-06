@@ -11,18 +11,43 @@ class App extends React.Component {
   }
 
   addRandomContact = () => {
-    const contact = contacts[Math.floor(Math.random(0) * contacts.length)];
-    const contactsCopy = [...this.state.contacts];
-    contactsCopy.push(contact);
+    const unused = contacts.filter(
+      (contact) => !this.state.contacts.includes(contact)
+    );
+    const contact = unused[Math.floor(Math.random(0) * contacts.length)];
+
     this.setState({
-      contacts: contactsCopy
+      contacts: [...this.state.contacts, contact]
     });
   };
+
+  sortBypopularity = () => {
+    const sorted = [...this.state.contacts];
+    sorted.sort((first, second) =>
+      second.popularity - first.popularity ? -1 : 1
+    );
+    this.setState({
+      contacts: sorted
+    });
+  };
+
+  sortByname = () => {
+    const sorted = [...this.state.contacts];
+    sorted.sort((first, second) => (second.name > first.name ? -1 : 1));
+    this.setState({
+      contacts: sorted
+    });
+  };
+
+  removeContact = () => {};
 
   render() {
     return (
       <div>
         <button onClick={this.addRandomContact}>Add Random Contact</button>
+        <button onClick={this.sortBypopularity}>Sort by popularity</button>
+        <button onClick={this.sortByname}>Sort by name</button>
+
         <table>
           <thead>
             <tr>
@@ -39,6 +64,9 @@ class App extends React.Component {
                 </td>
                 <td>{contact.name}</td>
                 <td>{contact.popularity}</td>
+                <td>
+                  <button onClick={this.removeContact}>Remove contact</button>
+                </td>
               </tr>
             ))}
           </tbody>
